@@ -20,7 +20,7 @@ EMAIL_OLD - The old email address, each commit with this email will be replaced
 by EMAIL_NEW
 EMAIL_NEW - The new email address to use in place of EMAIL_OLD
 SOURCE - Source directory containing Git repo where changes are applied
-BACKUP - Desintation directory where backup copy of repo is placed
+BACKUP - Optional argument - Desintation directory where backup copy of repo is placed.
 
 ##Example:
 
