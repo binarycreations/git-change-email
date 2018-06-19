@@ -58,6 +58,9 @@ function copy_repo {
 }
 
 function change_email {
+export EMAIL_OLD
+export EMAIL_NEW
+
 git filter-branch -f --commit-filter 'if [ "$GIT_AUTHOR_EMAIL" = "$EMAIL_OLD" ];
 then export GIT_AUTHOR_EMAIL="$EMAIL_NEW"; fi; git commit-tree "$@"'
 }
