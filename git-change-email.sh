@@ -1,9 +1,11 @@
-#!/bin/env bash
+!/bin/env bash
 # vim: tw=80 tabstop=4 softtabstop=4 shiftwidth=4 ai et colorcolumn=80
 #
 # A shell script to change the name of a single author's email address
 # throughout the history of a Git repo.
 #
+
+set -x
 
 function print_help() {
     HELP="#git-change-email
@@ -36,7 +38,7 @@ function args() {
     if [ "$1" == "--help" ]
     then
         print_help
-    elif [ "$2" < 3 ] && [ "$2" > 4 ]
+    elif [ "$2" -lt 3 ] || [ "$2" -gt 4 ]
     then
         echo "Wrong number of arguments. See --help"
         exit
@@ -44,12 +46,13 @@ function args() {
 }
 
 function copy_repo {
-    if [ -n "$DEST" ] then
+    if [ -n "$DEST" ]
+    then
         if [ -d "$DEST" ]
         then
             mkdir -p "$DEST"
         fi
-
+        
         cp -r "$SOURCE" "$DEST"
     fi
 }
@@ -65,9 +68,10 @@ function main() {
     EMAIL_NEW=$2
     SOURCE=$3
     DEST=$4
-    args $1 $#
+    
+    args "$1" "$#"
     copy_repo 
-    change_email EMAIL_OLD EMAIL_NEW DEST
+    change_email
 }
 
 main $@
