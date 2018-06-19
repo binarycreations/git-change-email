@@ -20,7 +20,7 @@ EMAIL_OLD - The old email address, each commit with this email will be replaced
 by EMAIL_NEW
 EMAIL_NEW - The new email address to use in place of EMAIL_OLD
 SOURCE - Source directory containing Git repo where changes are applied
-BACKUP - Desintation directory where copy of Git repo
+BACKUP - Desintation directory where backup copy of repo is placed
 
 ##Example:
 
@@ -36,20 +36,22 @@ function args() {
     if [ "$1" == "--help" ]
     then
         print_help
-    elif [ "$2" != 4 ]
+    elif [ "$2" < 3 ] && [ "$2" > 4 ]
     then
-        echo "Expected four arguments. See --help"
+        echo "Wrong number of arguments. See --help"
         exit
     fi
 }
 
 function copy_repo {
-    if [ -d "$DEST" ]
-    then
-        mkdir -p "$DEST"
-    fi
+    if [ -n "$DEST" ] then
+        if [ -d "$DEST" ]
+        then
+            mkdir -p "$DEST"
+        fi
 
-    cp -r "$SOURCE" "$DEST"
+        cp -r "$SOURCE" "$DEST"
+    fi
 }
 
 function change_email {
