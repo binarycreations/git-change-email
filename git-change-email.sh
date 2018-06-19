@@ -4,11 +4,6 @@
 # A shell script to change the name of a single author's email address
 # throughout the history of a Git repo.
 #
-# Usage: 
-# git-change-email ./repo-directory ./new-dir
-# 
-
-set -x
 
 function print_help() {
     HELP="#git-change-email
@@ -24,13 +19,12 @@ git-change-email EMAIL_OLD EMAIL_NEW SOURCE DEST\n
 EMAIL_OLD - The old email address, each commit with this email will be replaced
 by EMAIL_NEW
 EMAIL_NEW - The new email address to use in place of EMAIL_OLD
-SOURCE - Source directory containing Git repo
-DEST - Desintation directory where copy of Git repo will be made
-with changes to email history
+SOURCE - Source directory containing Git repo where changes are applied
+BACKUP - Desintation directory where copy of Git repo
 
 ##Example:
 
-git-change-email foo@example.com bar@example.com ./repo-dir ./new-repo-dir
+git-change-email foo@example.com bar@example.com ./repo-dir ./backup-dir
 
 
 "
@@ -59,12 +53,8 @@ function copy_repo {
 }
 
 function change_email {
-    git filter-branch --commit-filter '\
-if [ "$GIT_AUTHOR_EMAIL" = "$EMAIL_OLD" ] \
-then \
-    export GIT_AUTHOR_EMAIL="$EMAIL_NEW";
-fi;'
-git commit-tree "$@"
+git filter-branch -f --commit-filter 'if [ "$GIT_AUTHOR_EMAIL" = "$EMAIL_OLD" ];
+then export GIT_AUTHOR_EMAIL="$EMAIL_NEW"; fi; git commit-tree "$@"'
 }
 
 
